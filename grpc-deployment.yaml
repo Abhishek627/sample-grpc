@@ -4,18 +4,16 @@ kind: Service
 metadata:
   name: sample-grpc
   namespace: default
-  annotations:
+  annotations: # Sample ambassador annotation
     getambassador.io/config: |
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  sample_grpc_mapping
-      prefix: /sample_grpc/
-      service: sample-grpc
-      labels:
-        ambassador:
-          - string_request_label:
-            - sample-grpc
+      grpc: True
+      prefix: /hello.Greeter/
+      rewrite: /hello.Greeter/
+      service: sample-grpc:8888
 spec:
   selector:
     app: sample-grpc
@@ -44,7 +42,3 @@ spec:
         ports:
         - name: http-api
           containerPort: 8888 
-        resources:
-          limits:
-            cpu: "0.1"
-            memory: 100Mi
